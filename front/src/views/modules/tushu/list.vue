@@ -28,34 +28,8 @@
 
 
                     <el-form-item>
-                        <el-button type="success" @click="search()">查询<i class="el-icon-search el-icon--right"/></el-button>
-                    </el-form-item>
-                </el-row>
-                <el-row class="ad" :style="{justifyContent:contents.btnAdAllBoxPosition=='1'?'flex-start':contents.btnAdAllBoxPosition=='2'?'center':'flex-end'}">
-                    <el-form-item>
-                        <el-button
-                                v-if="isAuth('tushu','新增')"
-                                type="success"
-                                icon="el-icon-plus"
-                                @click="addOrUpdateHandler()"
-                        >新增</el-button>
                         &nbsp;
-                        <el-button
-                                v-if="isAuth('tushu','删除')"
-                                :disabled="dataListSelections.length <= 0"
-                                type="danger"
-                                icon="el-icon-delete"
-                                @click="deleteHandler()"
-                        >删除</el-button>
-                        &nbsp;
-                        <el-button
-                                v-if="isAuth('tushu','报表')"
-                                type="success"
-                                icon="el-icon-pie-chart"
-                                @click="chartDialog()"
-                        >报表</el-button>
-                        &nbsp;
-                        <a style="text-decoration:none" class="el-button el-button--success"
+<a style="text-decoration:none" class="el-button el-button--success"
                            v-if="isAuth('tushu','导入导出')"
                            icon="el-icon-download"
                            href="http://localhost:8080/tushuguanli/upload/tushuMuBan.xls"
@@ -83,6 +57,7 @@
                                     icon="el-icon-download"
                             >导出</el-button>
                         </download-excel>
+
                         &nbsp;
                     </el-form-item>
                 </el-row>
@@ -195,6 +170,14 @@
                             <el-button v-if="isAuth('tushu','修改')" type="primary" icon="el-icon-edit" size="mini" @click="addOrUpdateHandler(scope.row.id)">修改</el-button>
                             <el-button v-if="isAuth('tushu','删除')" type="danger" icon="el-icon-delete" size="mini" @click="deleteHandler(scope.row.id)">删除</el-button>
 
+                            <el-button
+                                v-if="role==='用户'"
+                                type="primary"
+                                size="mini"
+                                :disabled="Number(scope.row.tushuNumber) <= 0"
+                                @click="openBorrow(scope.row)"
+                            >借阅</el-button>
+
                         </template>
                     </el-table-column>
                 </el-table>
@@ -212,6 +195,7 @@
                         :background="contents.pageBtnBG"
                         :style="{textAlign:contents.pagePosition==1?'left':contents.pagePosition==2?'center':'right'}"
                 ></el-pagination>
+
             </div>
         </div>
         <!-- 添加/修改页面  将父组件的search方法传递给子组件-->
@@ -231,22 +215,42 @@
 				<el-button @click="chartVisiable = false">返回</el-button>
 			</span>
         </el-dialog>
+      <el-dialog title="借阅图书" :visible.sync="dialogVisible" width="30%">
+        <el-form>
+          <el-form-item label="借阅天数">
+            <el-input-number v-model="borrowDays" :min="1"/>
+          </el-form-item>
+        </el-form>
+
+        <span slot="footer">
+          <el-button @click="dialogVisible=false">取消</el-button>
+          <el-button type="primary" @click="submitBorrow">确认借阅</el-button>
+        </span>
+      </el-dialog>
 
     </div>
 </template>
 <script>
-    import AddOrUpdate from "./add-or-update";
+    import AddOrUpdate from "../dictionaryTushu/add-or-update.vue";
     import styleJs from "../../../utils/style.js";
+    import request from '@/utils/http'
 
     export default {
         data() {
         return {
+
             searchForm: {
-                key: ""
+                key: "",
+                tushuName: "",
+                tushuTypes: ""
             },
             sessionTable : "",//登录账户所在表名
             role : "",//权限
             userId:"",//当前登录人的id
+
+            dialogVisible: false,
+            borrowDays: 1,
+            currentRow: null,
     //级联表下拉框搜索条件
     //当前表下拉框搜索条件
               tushuTypesSelectSearch : [],
@@ -485,6 +489,8 @@
                 //     });
                 // })
             },
+
+
             contentStyleChange() {
                 this.contentSearchStyleChange()
                 this.contentBtnAdAllStyleChange()
@@ -532,6 +538,7 @@
                     }, 10 )
                 })
             },
+
             // 搜索按钮
             contentSearchBtnStyleChange() {
                 this.$nextTick(() => {
@@ -547,6 +554,51 @@
                     })
                 })
             },
+          openBorrow(row) {
+            this.currentRow = row
+            this.borrowDays = 1
+            this.dialogVisible = true
+          },
+
+          async submitBorrow() {
+            try {
+              // 你 data 里有 userId，这里直接用它；没有的话从 sessionStorage 取
+              const userId = this.userId || sessionStorage.getItem("userId")
+              if (!userId) {
+                this.$message.error("未获取到用户信息，请重新登录")
+                return
+              }
+              if (!this.currentRow || !this.currentRow.id) {
+                this.$message.error("未选择图书")
+                return
+              }
+
+              const resp = await request({
+                url: "/tushujieyue/add",
+                method: "post",
+                data: {
+                  tushuId: this.currentRow.id,
+                  yonghuId: Number(userId),
+                  tushujieyueShijian: Number(this.borrowDays),
+                  tushujieyueTypes: 1
+                }
+              })
+
+              const data = resp.data
+              if (data && data.code === 0) {
+                this.$message.success("借阅成功")
+                this.dialogVisible = false
+                // 你这页获取列表的方法名大概率叫 getDataList
+                if (typeof this.getDataList === "function") this.getDataList()
+                else if (typeof this.getList === "function") this.getList()
+              } else {
+                this.$message.error((data && data.msg) || "借阅失败")
+              }
+            } catch (e) {
+              console.error(e)
+              this.$message.error(e?.response?.data?.msg || e?.message || "借阅失败")
+            }
+          },
             // 新增、批量删除
             contentBtnAdAllStyleChange() {
                 this.$nextTick(() => {
@@ -817,8 +869,8 @@
   }
 
   .pages {
-    & /deep/ el-pagination__sizes{
-      & /deep/ el-input__inner {
+    ::v-deep el-pagination__sizes{
+      ::v-deep el-input__inner {
         height: 22px;
         line-height: 22px;
       }
@@ -831,7 +883,7 @@
   } 
 
   .tables {
-	& /deep/ .el-button--success {
+	::v-deep .el-button--success {
 		height: 40px;
 		color: rgba(88, 84, 84, 1);
 		font-size: 10px;
@@ -842,7 +894,7 @@
 		background-color: rgba(153, 204, 51, 1);
 	}
 
-	& /deep/ .el-button--primary {
+	::v-deep .el-button--primary {
 		height: 40px;
 		color: rgba(91, 87, 87, 1);
 		font-size: 10px;
@@ -853,7 +905,7 @@
 		background-color: rgba(255, 255, 102, 1);
 	}
 
-	& /deep/ .el-button--danger {
+	::v-deep .el-button--danger {
 		height: 40px;
 		color: rgba(255, 255, 255, 1);
 		font-size: 10px;
@@ -864,7 +916,7 @@
 		background-color: rgba(51, 102, 0, 1);
 	}
 
-    & /deep/ .el-button {
+    ::v-deep .el-button {
       margin: 4px;
     }
   }

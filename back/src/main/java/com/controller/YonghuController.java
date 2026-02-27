@@ -310,26 +310,32 @@ public class YonghuController {
     @IgnoreAuth
     @RequestMapping(value = "/login")
     public R login(String username, String password, String captcha, HttpServletRequest request) {
-        YonghuEntity yonghu = yonghuService.selectOne(new EntityWrapper<YonghuEntity>().eq("username", username));
-        if(yonghu==null || !yonghu.getPassword().equals(password))
+        YonghuEntity yonghu = yonghuService.selectOne(
+                new EntityWrapper<YonghuEntity>().eq("username", username)
+        );
+
+        if (yonghu == null || !yonghu.getPassword().equals(password)) {
             return R.error("账号或密码不正确");
-        else if(yonghu.getYonghuDelete() != 1)
+        } else if (yonghu.getYonghuDelete() != 1) {
             return R.error("账户已被删除");
-        //  // 获取监听器中的字典表
-        // ServletContext servletContext = ContextLoader.getCurrentWebApplicationContext().getServletContext();
-        // Map<String, Map<Integer, String>> dictionaryMap= (Map<String, Map<Integer, String>>) servletContext.getAttribute("dictionaryMap");
-        // Map<Integer, String> role_types = dictionaryMap.get("role_types");
-        // role_types.get(.getRoleTypes());
-        String token = tokenService.generateToken(yonghu.getId(),username, "yonghu", "用户");
+        }
+
+        // ✅ 关键：写入 session，/yonghu/session 才能读到
+        request.getSession().setAttribute("userId", yonghu.getId());
+        request.getSession().setAttribute("role", "用户");
+        request.getSession().setAttribute("tableName", "yonghu");
+        request.getSession().setAttribute("username", yonghu.getYonghuName());
+
+        String token = tokenService.generateToken(yonghu.getId(), username, "yonghu", "用户");
+
         R r = R.ok();
         r.put("token", token);
-        r.put("role","用户");
-        r.put("username",yonghu.getYonghuName());
-        r.put("tableName","yonghu");
-        r.put("userId",yonghu.getId());
+        r.put("role", "用户");
+        r.put("username", yonghu.getYonghuName());
+        r.put("tableName", "yonghu");
+        r.put("userId", yonghu.getId());
         return r;
     }
-
     /**
     * 注册
     */

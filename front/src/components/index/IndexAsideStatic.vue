@@ -78,7 +78,7 @@ export default {
         'el-icon-stopwatch',
       ],
       menulistStyle: 'vertical',
-	  menulistBorderBottom: {},
+      menulistBorderBottom: {},
     }
   },
   mounted() {

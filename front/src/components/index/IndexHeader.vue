@@ -65,9 +65,10 @@
                     name: "login"
                 });
             },
-            onIndexTap(){
-                window.location.href = `${this.$base.indexUrl}`
-            },
+          onIndexTap() {
+            // 跳到独立前台入口（同域同端口，不会发生 8084->8080 的混乱）
+            window.location.href = "/tushuguanli/front/index.html";
+          },
             setHeaderStyle() {
                 this.$nextTick(()=>{
                     document.querySelectorAll('.navbar .right-menu .logout').forEach(el=>{
