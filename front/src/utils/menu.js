@@ -71,39 +71,10 @@ const menu = {
                 ],
                 "menu":"基础数据管理"
             }
-            ,{
-                "child":[
-                    {
-                        "buttons":[
-                            "查看",
-                            "新增",
-                            "修改",
-                            "删除"
-                        ],
-                        "menu":"论坛管理",
-                        "menuJump":"列表",
-                        "tableName":"forum"
-                    }
-                ],
-                "menu":"论坛管理"
-            }
-            ,{
-                "child":[
-                    {
-                        "buttons":[
-                            "查看",
-                            "新增",
-                            "修改",
-                            "删除"
-                        ],
-                        "menu":"公告信息管理",
-                        "menuJump":"列表",
-                        "tableName":"news"
-                    }
-                ],
-                "menu":"公告信息管理"
-            }
-            ,{
+            ,
+
+
+            {
                 "child":[
                     {
                         "buttons":[
@@ -176,33 +147,9 @@ const menu = {
     },
 	{
 	    "backMenu":[
+
+
 	        {
-	            "child":[
-	                {
-	                    "buttons":[
-	                        "查看"
-	                    ],
-	                    "menu":"论坛管理",
-	                    "menuJump":"列表",
-	                    "tableName":"forum"
-	                }
-	            ],
-	            "menu":"论坛管理"
-	        }
-	        ,{
-	            "child":[
-	                {
-	                    "buttons":[
-	                        "查看"
-	                    ],
-	                    "menu":"公告信息管理",
-	                    "menuJump":"列表",
-	                    "tableName":"news"
-	                }
-	            ],
-	            "menu":"公告信息管理"
-	        }
-	        ,{
 	            "child":[
 	                {
 	                    "buttons":[

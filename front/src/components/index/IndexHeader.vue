@@ -91,97 +91,82 @@
 
 
 <style lang="scss" scoped>
-    .navbar {
-        height: 60px;
-        line-height: 60px;
-        width: 100%;
-        padding: 0 34px;
-        box-sizing: border-box;
-        background-color: #ff00ff;
-        position: relative;
-        z-index: 111;
+.navbar {
+  width: 100%;
+  padding: 0 24px;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 111;
 
-    .right-menu {
-        position: absolute;
-        right: 34px;
-        top: 0;
-        height: 100%;
-        display: flex;
-        justify-content: flex-end;
-        align-items: center;
-        z-index: 111;
+  /* 灰蓝渐变顶栏 */
+  background: linear-gradient(90deg, #eef2f7 0%, #e6ecf5 100%) !important;
+  border-bottom: 1px solid #d8e1ee;
+  box-shadow: 0 2px 10px rgba(40, 60, 90, 0.05) !important;
 
-    .user-info {
-        font-size: 16px;
-        color: red;
-        padding: 0 12px;
-    }
+  display: flex;
+  align-items: center;
+}
 
-    .logout {
-        font-size: 16px;
-        color: red;
-        padding: 0 12px;
-        cursor: pointer;
-    }
+/* 左侧标题区域 */
+.title-menu {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  height: 100%;
+  width: 100%;
+}
 
-    }
+.title-img {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 8px !important;
+  box-shadow: none !important;
+}
 
-    .title-menu {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        width: 100%;
-        height: 100%;
+/* 系统名称 */
+.title-name {
+  font-size: 16px !important;
+  font-weight: 600 !important;
+  color: #2c3e50 !important;
+  letter-spacing: 0.3px;
+}
 
-    .title-img {
-        width: 44px;
-        height: 44px;
-        border-radius: 22px;
-        box-shadow: 0 1px 6px #444;
-        margin-right: 16px;
-    }
+/* 右侧区域 */
+.right-menu {
+  position: absolute;
+  right: 24px;
+  top: 0;
+  height: 100%;
 
-    .title-name {
-        font-size: 24px;
-        color: #fff;
-        font-weight: 700;
-    }
-    }
-    }
-    // .el-header .fr {
-       // 	float: right;
-       // }
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+}
 
-    // .el-header .fl {
-       // 	float: left;
-       // }
+/* 用户信息 */
+.user-info {
+  font-size: 13px !important;
+  color: #4a6078 !important;
+  padding: 0 10px !important;
+  border-right: 1px solid #d8e1ee;
+  line-height: 1;
+}
 
-    // .el-header {
-       // 	width: 100%;
-       // 	color: #333;
-       // 	text-align: center;
-       // 	line-height: 60px;
-       // 	padding: 0;
-       // 	z-index: 99;
-       // }
+/* 按钮 */
+.logout {
+  font-size: 13px !important;
+  color: #3a5a8f !important;
+  padding: 8px 12px !important;
+  line-height: 1;
+  cursor: pointer;
+  border-radius: 6px;
+  transition: all 0.15s ease;
+}
 
-    // .logo {
-       // 	width: 60px;
-       // 	height: 60px;
-       // 	margin-left: 70px;
-       // }
-
-    // .avator {
-       // 	width: 40px;
-       // 	height: 40px;
-       // 	background: #ffffff;
-       // 	border-radius: 50%;
-       // }
-
-    // .title {
-       // 	color: #ffffff;
-       // 	font-size: 20px;
-       // 	font-weight: bold;
-       // 	margin-left: 20px;
-       // }
+/* hover */
+.logout:hover {
+  background: #dbe6f5;
+  color: #1f3f75;
+}
 </style>

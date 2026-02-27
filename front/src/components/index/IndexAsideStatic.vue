@@ -202,39 +202,58 @@ export default {
 }
 </script>
 <style lang="scss" scoped>
-  .index-aside {
-    position: relative;
-    overflow: hidden;
+.index-aside {
+  position: relative;
+  overflow: hidden;
 
-    .menulistImg {
-      padding: 24px 0;
-      box-sizing: border-box;
+  background: #f2f6fc;        /* 浅灰蓝背景 */
+  border-right: 1px solid #d8e1ee;
 
-      .el-image {
-        margin: 0 auto;
-        width: 100px;
-        height: 100px;
-        border-radius: 100%;
-        display: block;
-      }
-    }
+  .menulistImg {
+    padding: 20px 0;
+    box-sizing: border-box;
 
-    .index-aside-inner {
-      height: 100%;
-      margin-right: -17px;
-      margin-bottom: -17px;
-      overflow: scroll;
-      overflow-x: hidden !important;
-      padding-top: 60px;
-      box-sizing: border-box;
-
-      &:focus {
-        outline: none;
-      }
-
-      .el-menu {
-        border: 0;
-      }
+    .el-image {
+      margin: 0 auto;
+      width: 80px;
+      height: 80px;
+      border-radius: 12px;
+      display: block;
     }
   }
+
+  .index-aside-inner {
+    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden !important;
+    padding-top: 20px;
+    box-sizing: border-box;
+
+    &:focus {
+      outline: none;
+    }
+
+    .el-menu {
+      border: 0;
+      background: transparent;
+    }
+  }
+}
+
+/* 菜单项 hover */
+::v-deep .el-menu-item:hover {
+  background-color: #e4edf8 !important;
+}
+
+/* 子菜单 hover */
+::v-deep .el-submenu__title:hover {
+  background-color: #e4edf8 !important;
+}
+
+/* 激活项 */
+::v-deep .el-menu-item.is-active {
+  background-color: #d6e4f7 !important;
+  color: #1f3f75 !important;
+  font-weight: 600;
+}
 </style>

@@ -1,360 +1,217 @@
 <template>
-    <div style="backgroundImage: url('/tushuguanli/img/back-img-bg.jpg');background-size:cover;">
-        <div class="container">
-            <div class="login-form" style="backgroundColor:rgba(183, 174, 174, 0.5);borderRadius:22px">
-                <h1 class="h1" style="color:#000;fontSize:28px;">图书管理系统注册</h1>
-                <el-form class="rgs-form" label-width="120px">
-                        <el-form-item label="账号" class="input">
-                            <el-input v-model="ruleForm.username" autocomplete="off" placeholder="账号"  />
-                        </el-form-item>
-                        <el-form-item label="密码" class="input">
-                            <el-input type="password" v-model="ruleForm.password" autocomplete="off" show-password/>
-                        </el-form-item>
-                        <el-form-item label="重复密码" class="input">
-                            <el-input type="password" v-model="ruleForm.repetitionPassword" autocomplete="off" show-password/>
-                        </el-form-item>
-                        <el-form-item label="用户姓名" class="input" v-if="tableName=='yonghu'">
-                            <el-input v-model="ruleForm.yonghuName" autocomplete="off" placeholder="用户姓名"  />
-                        </el-form-item>
-                        <el-form-item label="联系方式" class="input" v-if="tableName=='yonghu'">
-                            <el-input v-model="ruleForm.yonghuPhone" autocomplete="off" placeholder="联系方式"  />
-                        </el-form-item>
-                        <el-form-item label="用户身份证号" class="input" v-if="tableName=='yonghu'">
-                            <el-input v-model="ruleForm.yonghuIdNumber" autocomplete="off" placeholder="用户身份证号"  />
-                        </el-form-item>
-                        <el-form-item label="邮箱" class="input" v-if="tableName=='yonghu'">
-                            <el-input v-model="ruleForm.yonghuEmail" autocomplete="off" placeholder="邮箱"  />
-                        </el-form-item>
-                        <div style="display: flex;flex-wrap: wrap;width: 100%;justify-content: center;">
-                            <el-button class="btn" type="primary" @click="login()">注册</el-button>
-                            <el-button class="btn close" type="primary" @click="close()">取消</el-button>
-                        </div>
-                </el-form>
-            </div>
+  <div class="register-root">
+    <div class="register-card">
+      <div class="title">
+        <div class="title-main">图书管理系统注册</div>
+        <div class="title-sub">创建账号后可登录并完善个人信息</div>
+      </div>
+
+      <el-form class="rgs-form" label-position="top">
+        <el-form-item label="账号">
+          <el-input v-model="ruleForm.username" autocomplete="off" placeholder="请输入账号" />
+        </el-form-item>
+
+        <el-form-item label="密码">
+          <el-input
+              type="password"
+              v-model="ruleForm.password"
+              autocomplete="off"
+              show-password
+              placeholder="请输入密码"
+          />
+        </el-form-item>
+
+        <el-form-item label="重复密码">
+          <el-input
+              type="password"
+              v-model="ruleForm.repetitionPassword"
+              autocomplete="off"
+              show-password
+              placeholder="请再次输入密码"
+          />
+        </el-form-item>
+
+        <el-form-item v-if="tableName === 'yonghu'" label="用户姓名">
+          <el-input v-model="ruleForm.yonghuName" autocomplete="off" placeholder="请输入姓名" />
+        </el-form-item>
+
+        <el-form-item v-if="tableName === 'yonghu'" label="联系方式">
+          <el-input v-model="ruleForm.yonghuPhone" autocomplete="off" placeholder="请输入手机号" />
+        </el-form-item>
+
+        <el-form-item v-if="tableName === 'yonghu'" label="用户身份证号">
+          <el-input v-model="ruleForm.yonghuIdNumber" autocomplete="off" placeholder="请输入身份证号" />
+        </el-form-item>
+
+        <el-form-item v-if="tableName === 'yonghu'" label="邮箱">
+          <el-input v-model="ruleForm.yonghuEmail" autocomplete="off" placeholder="请输入邮箱" />
+        </el-form-item>
+
+        <div class="btn-row">
+          <el-button class="btn" type="primary" @click="login()">注册</el-button>
+          <el-button class="btn" @click="close()">取消</el-button>
         </div>
+      </el-form>
     </div>
+  </div>
 </template>
+
 <script>
-    export default {
-        data() {
-            return {
-                ruleForm: {
-                },
-                tableName:"",
-                rules: {},
-                sexTypesOptions : [],
-            };
-        },
-        mounted(){
-            let table = this.$storage.get("loginTable");
-            this.tableName = table;
-
-            //级联表的下拉框查询
-
-        },
-        methods: {
-            // 获取uuid
-            getUUID () {
-                return new Date().getTime();
-            },
-            close(){
-                this.$router.push({ path: "/login" });
-            },
-            // 注册
-            login() {
-
-                            if((!this.ruleForm.username)){
-                                this.$message.error('账号不能为空');
-                                return
-                            }
-                            if((!this.ruleForm.password)){
-                                this.$message.error('密码不能为空');
-                                return
-                            }
-                            if((!this.ruleForm.repetitionPassword)){
-                                this.$message.error('重复密码不能为空');
-                                return
-                            }
-                            if(this.ruleForm.repetitionPassword != this.ruleForm.password){
-                                this.$message.error('密码和重复密码不一致');
-                                return
-                            }
-                            if((!this.ruleForm.yonghuName)&& 'yonghu'==this.tableName){
-                                this.$message.error('用户姓名不能为空');
-                                return
-                            }
-                             if('yonghu' == this.tableName && this.ruleForm.yonghuPhone&&(!this.$validate.isMobile(this.ruleForm.yonghuPhone))){
-                                 this.$message.error('手机应输入手机格式');
-                                 return
-                             }
-                            if((!this.ruleForm.yonghuIdNumber)&& 'yonghu'==this.tableName){
-                                this.$message.error('用户身份证号不能为空');
-                                return
-                            }
-                            if('yonghu' == this.tableName && this.ruleForm.yonghuEmail&&(!this.$validate.isEmail(this.ruleForm.yonghuEmail))){
-                                this.$message.error("邮箱应输入邮件格式");
-                                return
-                            }
-                this.$http({
-                    url: `${this.tableName}/register`,
-                    method: "post",
-                    data:this.ruleForm
-                }).then(({ data }) => {
-                    if (data && data.code === 0) {
-                    this.$message({
-                        message: "注册成功,请登录后在个人中心页面补充个人数据",
-                        type: "success",
-                        duration: 1500,
-                        onClose: () => {
-                        this.$router.replace({ path: "/login" });
-                }
-                });
-                } else {
-                    this.$message.error(data.msg);
-                }
-            });
-            }
-        }
+export default {
+  data() {
+    return {
+      ruleForm: {},
+      tableName: "",
+      rules: {},
+      sexTypesOptions: []
     };
+  },
+  mounted() {
+    let table = this.$storage.get("loginTable");
+    this.tableName = table;
+
+    // 级联表的下拉框查询（你原来留空的我也不动）
+  },
+  methods: {
+    // 获取uuid（保留你原来的）
+    getUUID() {
+      return new Date().getTime();
+    },
+    close() {
+      this.$router.push({ path: "/login" });
+    },
+    // 注册（保留你原来的方法名 login，不动外部调用）
+    login() {
+      if (!this.ruleForm.username) {
+        this.$message.error("账号不能为空");
+        return;
+      }
+      if (!this.ruleForm.password) {
+        this.$message.error("密码不能为空");
+        return;
+      }
+      if (!this.ruleForm.repetitionPassword) {
+        this.$message.error("重复密码不能为空");
+        return;
+      }
+      if (this.ruleForm.repetitionPassword != this.ruleForm.password) {
+        this.$message.error("密码和重复密码不一致");
+        return;
+      }
+      if (!this.ruleForm.yonghuName && "yonghu" == this.tableName) {
+        this.$message.error("用户姓名不能为空");
+        return;
+      }
+      if (
+          "yonghu" == this.tableName &&
+          this.ruleForm.yonghuPhone &&
+          !this.$validate.isMobile(this.ruleForm.yonghuPhone)
+      ) {
+        this.$message.error("手机应输入手机格式");
+        return;
+      }
+      if (!this.ruleForm.yonghuIdNumber && "yonghu" == this.tableName) {
+        this.$message.error("用户身份证号不能为空");
+        return;
+      }
+      if (
+          "yonghu" == this.tableName &&
+          this.ruleForm.yonghuEmail &&
+          !this.$validate.isEmail(this.ruleForm.yonghuEmail)
+      ) {
+        this.$message.error("邮箱应输入邮件格式");
+        return;
+      }
+
+      this.$http({
+        url: `${this.tableName}/register`,
+        method: "post",
+        data: this.ruleForm
+      }).then(({ data }) => {
+        if (data && data.code === 0) {
+          this.$message({
+            message: "注册成功,请登录后在个人中心页面补充个人数据",
+            type: "success",
+            duration: 1500,
+            onClose: () => {
+              this.$router.replace({ path: "/login" });
+            }
+          });
+        } else {
+          this.$message.error(data.msg);
+        }
+      });
+    }
+  }
+};
 </script>
+
 <style lang="scss" scoped>
-    .el-radio__input.is-checked .el-radio__inner {
-        border-color: #00c292;
-        background: #00c292;
-    }
+/* 全屏覆盖 + 居中，跟 login 同一套 */
+.register-root {
+  position: fixed !important;
+  inset: 0 !important;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 999999 !important;
 
-    .el-radio__input.is-checked .el-radio__inner {
-        border-color: #00c292;
-        background: #00c292;
-    }
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 
-    .el-radio__input.is-checked .el-radio__inner {
-        border-color: #00c292;
-        background: #00c292;
-    }
+  background: #f5f6f8 !important;
+  padding: 24px !important;
+  box-sizing: border-box !important;
+}
 
-    .el-radio__input.is-checked+.el-radio__label {
-        color: #00c292;
-    }
+.register-card {
+  width: 420px;
+  max-width: 92vw;
+  background: #fff;
+  border: 1px solid #ebeef5;
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.06);
+  box-sizing: border-box;
+}
 
-    .el-radio__input.is-checked+.el-radio__label {
-        color: #00c292;
-    }
+.title {
+  text-align: center;
+  margin-bottom: 18px;
+}
+.title-main {
+  font-size: 20px;
+  font-weight: 600;
+  color: #111827;
+}
+.title-sub {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #6b7280;
+}
 
-    .el-radio__input.is-checked+.el-radio__label {
-        color: #00c292;
-    }
+.rgs-form {
+  ::v-deep .el-form-item__label {
+    padding-bottom: 6px;
+    line-height: 18px;
+    color: #6b7280;
+    font-size: 13px;
+  }
+  ::v-deep .el-input__inner {
+    height: 42px;
+    line-height: 42px;
+    border-radius: 10px;
+  }
+}
 
-    .h1 {
-        margin-top: 10px;
-    }
-
-    body {
-        padding: 0;
-        margin: 0;
-    }
-
-    // .container {
-       //    min-height: 100vh;
-       //    text-align: center;
-       //    // background-color: #00c292;
-       //    padding-top: 20vh;
-       //    background-image: url(../assets/img/bg.jpg);
-       //    background-size: 100% 100%;
-       //    opacity: 0.9;
-       //  }
-
-    // .login-form:before {
-       // 	vertical-align: middle;
-       // 	display: inline-block;
-       // }
-
-    // .login-form {
-       // 	max-width: 500px;
-       // 	padding: 20px 0;
-       // 	width: 80%;
-       // 	position: relative;
-       // 	margin: 0 auto;
-
-    // 	.label {
-          // 		min-width: 60px;
-          // 	}
-
-    // 	.input-group {
-          // 		max-width: 500px;
-          // 		padding: 20px 0;
-          // 		width: 80%;
-          // 		position: relative;
-          // 		margin: 0 auto;
-          // 		display: flex;
-          // 		align-items: center;
-
-    // 		.input-container {
-              // 			display: inline-block;
-              // 			width: 100%;
-              // 			text-align: left;
-              // 			margin-left: 10px;
-              // 		}
-
-    // 		.icon {
-              // 			width: 30px;
-              // 			height: 30px;
-              // 		}
-
-    // 		.input {
-              // 			position: relative;
-              // 			z-index: 2;
-              // 			float: left;
-              // 			width: 100%;
-              // 			margin-bottom: 0;
-              // 			box-shadow: none;
-              // 			border-top: 0px solid #ccc;
-              // 			border-left: 0px solid #ccc;
-              // 			border-right: 0px solid #ccc;
-              // 			border-bottom: 1px solid #ccc;
-              // 			padding: 0px;
-              // 			resize: none;
-              // 			border-radius: 0px;
-              // 			display: block;
-              // 			width: 100%;
-              // 			height: 34px;
-              // 			padding: 6px 12px;
-              // 			font-size: 14px;
-              // 			line-height: 1.42857143;
-              // 			color: #555;
-              // 			background-color: #fff;
-              // 		}
-
-    // 	}
-    // }
-
-    .nk-navigation {
-        margin-top: 15px;
-
-    a {
-        display: inline-block;
-        color: #fff;
-        background: rgba(255, 255, 255, .2);
-        width: 100px;
-        height: 50px;
-        border-radius: 30px;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        margin: 0 auto;
-        justify-content: center;
-        padding: 0 20px;
-    }
-
-    .icon {
-        margin-left: 10px;
-        width: 30px;
-        height: 30px;
-    }
-    }
-
-    .register-container {
-        margin-top: 10px;
-
-    a {
-        display: inline-block;
-        color: #fff;
-        max-width: 500px;
-        height: 50px;
-        border-radius: 30px;
-        text-align: center;
-        display: flex;
-        align-items: center;
-        margin: 0 auto;
-        justify-content: center;
-        padding: 0 20px;
-
-    div {
-        margin-left: 10px;
-    }
-    }
-    }
-
-    .container {
-        height: 100vh;
-        background-position: center center;
-        background-size: cover;
-        background-repeat: no-repeat;
-
-    .login-form {
-        right: 50%;
-        top: 50%;
-        height: auto;
-        transform: translate3d(50%, -50%, 0);
-        border-radius: 10px;
-        background-color: rgba(255,255,255,.5);
-        width: 420px;
-        padding: 30px 30px 40px 30px;
-        font-size: 14px;
-        font-weight: 500;
-
-    .h1 {
-        margin: 0;
-        text-align: center;
-        line-height: 54px;
-        font-size: 24px;
-        color: #000;
-    }
-
-    .rgs-form {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-
-    .input {
-        width: 100%;
-
-    ::v-deep .el-form-item__label {
-          line-height: 40px;
-          color: rgba(17, 16, 16, 1);
-          font-size: #606266;
-      }
-
-    ::v-deep .el-input__inner {
-          height: 40px;
-          color: rgba(23, 24, 26, 1);
-          font-size: 14px;
-          border-width: 1px;
-          border-style: solid;
-          border-color: #606266;
-          border-radius: 22px;
-          background-color: #fff;
-      }
-    }
-
-    .btn {
-        margin: 0 10px;
-        width: 88px;
-        height: 44px;
-        color: #fff;
-        font-size: 14px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: #409EFF;
-        border-radius: 22px;
-        background-color: #409EFF;
-    }
-
-    .close {
-        margin: 0 10px;
-        width: 88px;
-        height: 44px;
-        color: #409EFF;
-        font-size: 14px;
-        border-width: 1px;
-        border-style: solid;
-        border-color: #409EFF;
-        border-radius: 22px;
-        background-color: #FFF;
-    }
-
-    }
-    }
-    }
+.btn-row {
+  display: flex;
+  gap: 12px;
+  margin-top: 8px;
+}
+.btn {
+  flex: 1;
+  height: 42px;
+  border-radius: 10px;
+}
 </style>

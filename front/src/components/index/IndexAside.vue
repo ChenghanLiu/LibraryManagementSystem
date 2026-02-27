@@ -44,13 +44,32 @@ export default {
 </script>
 <style lang="scss" scoped>
 .index-aside {
-  margin-top: 80px;
-  overflow: hidden;
+  margin-top: 70px;
+  width: 200px;
+  background: #f2f6fc;
+  border-right: 1px solid #d8e1ee;
+
   .index-aside-inner {
-    width: 217px;
+    width: 100%;
     height: 100%;
-    overflow-y: scroll;
+    overflow-y: auto;
   }
+}
+
+/* hover 效果 */
+::v-deep .el-menu-item:hover {
+  background-color: #e4edf8 !important;
+}
+
+/* 激活项 */
+::v-deep .el-menu-item.is-active {
+  background-color: #d6e4f7 !important;
+  font-weight: 600;
+}
+
+/* 子菜单标题 */
+::v-deep .el-submenu__title:hover {
+  background-color: #e4edf8 !important;
 }
 </style>
 
