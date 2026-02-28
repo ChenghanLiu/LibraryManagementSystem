@@ -33,18 +33,7 @@ const menu = {
                         "tableName":"dictionaryChubanshe"
                     }
                     ,
-                    {
-                        "buttons":[
-                            "查看",
-                            "新增",
-                            "删除",
-                            "修改"
-                        ],
-                        "menu":"公告类型管理",
-                        "menuJump":"列表",
-                        "tableName":"dictionaryNews"
-                    }
-                    ,
+
                     {
                         "buttons":[
                             "查看",
@@ -120,22 +109,7 @@ const menu = {
                 ],
                 "menu":"用户管理"
             }
-            ,{
-                "child":[
-                    {
-                        "buttons":[
-                            "查看",
-                            "新增",
-                            "修改",
-                            "删除"
-                        ],
-                        "menu":"轮播图管理",
-                        "menuJump":"列表",
-                        "tableName":"config"
-                    }
-                ],
-                "menu":"轮播图信息"
-            }
+
         ],
         "frontMenu":[],
         "hasBackLogin":"是",

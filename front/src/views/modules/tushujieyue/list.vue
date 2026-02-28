@@ -904,67 +904,88 @@
 </script>
 <style lang="scss" scoped>
 .slt {
-    margin: 0 !important;
-    display: flex;
-  }
+  margin: 0 !important;
+  display: flex;
+}
 
-  .ad {
-    margin: 0 !important;
-    display: flex;
-  }
+.ad {
+  margin: 0 !important;
+  display: flex;
+}
 
-  .pages {
-    ::v-deep el-pagination__sizes{
-      ::v-deep el-input__inner {
-        height: 22px;
-        line-height: 22px;
-      }
+.pages {
+  ::v-deep .el-pagination__sizes {
+    ::v-deep .el-input__inner {
+      height: 28px;
+      line-height: 28px;
+      border-radius: 6px;
     }
   }
-  
+}
 
-  .el-button+.el-button {
-    margin:0;
-  } 
+.el-button + .el-button {
+  margin: 0;
+}
 
-  .tables {
-	::v-deep .el-button--success {
-		height: 40px;
-		color: rgba(88, 84, 84, 1);
-		font-size: 10px;
-		border-width: 1px;
-		border-style: solid;
-		border-color: #DCDFE6;
-		border-radius: 20px;
-		background-color: rgba(153, 204, 51, 1);
-	}
+.tables {
 
-	::v-deep .el-button--primary {
-		height: 40px;
-		color: rgba(91, 87, 87, 1);
-		font-size: 10px;
-		border-width: 1px;
-		border-style: solid;
-		border-color: #DCDFE6;
-		border-radius: 20px;
-		background-color: rgba(255, 255, 102, 1);
-	}
-
-	::v-deep .el-button--danger {
-		height: 40px;
-		color: rgba(255, 255, 255, 1);
-		font-size: 10px;
-		border-width: 1px;
-		border-style: solid;
-		border-color: #DCDFE6;
-		border-radius: 20px;
-		background-color: rgba(51, 102, 0, 1);
-	}
-
-    ::v-deep .el-button {
-      margin: 4px;
-    }
+  /* 成功按钮（详情） */
+  ::v-deep .el-button--success {
+    height: 34px;
+    color: #ffffff;
+    font-size: 12px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #5f8dd3;
+    border-radius: 8px;
+    background-color: #6fa3ef;
+    transition: all 0.2s ease;
   }
+
+  ::v-deep .el-button--success:hover {
+    background-color: #5c90db;
+    border-color: #4e82ce;
+  }
+
+  /* 主按钮（修改） */
+  ::v-deep .el-button--primary {
+    height: 34px;
+    color: #ffffff;
+    font-size: 12px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #3f6cb5;
+    border-radius: 8px;
+    background-color: #4f7fd1;
+    transition: all 0.2s ease;
+  }
+
+  ::v-deep .el-button--primary:hover {
+    background-color: #3e6ec0;
+    border-color: #355fa8;
+  }
+
+  /* 危险按钮（删除） */
+  ::v-deep .el-button--danger {
+    height: 34px;
+    color: #ffffff;
+    font-size: 12px;
+    border-width: 1px;
+    border-style: solid;
+    border-color: #c96a6a;
+    border-radius: 8px;
+    background-color: #d97b7b;
+    transition: all 0.2s ease;
+  }
+
+  ::v-deep .el-button--danger:hover {
+    background-color: #c96565;
+    border-color: #b85757;
+  }
+
+  /* 所有按钮间距 */
+  ::v-deep .el-button {
+    margin: 4px;
+  }
+}
 </style>
-
-
